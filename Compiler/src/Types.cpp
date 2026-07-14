@@ -915,6 +915,9 @@ struct TypeMapVisitor : AstVisitor
                     return true;
                 recordResolvedType(node, &builtinTypes.booleanType);
                 break;
+            case LBF_MATH_AVG:
+                recordResolvedType(node, &builtinTypes.numberType);
+                break;
             }
         }
         else
