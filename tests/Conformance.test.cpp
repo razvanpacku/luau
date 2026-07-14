@@ -24,6 +24,7 @@
 #include "BufferCage.h"
 #include "ConformanceIrHooks.h"
 
+
 #include <cstdlib>
 #include <fstream>
 #include <string>
@@ -86,6 +87,9 @@ LUAU_FASTFLAG(LuauCoroutineFinallyAnalysis)
 LUAU_FASTFLAG(LuauExportValueSyntax)
 LUAU_FASTFLAG(LuauCompileCallFbRemap)
 LUAU_DYNAMIC_FASTFLAG(LuauTableRobustOom)
+LUAU_FASTFLAG(LuauMathAvg)
+LUAU_FASTFLAG(LuauCompileMathAvg)
+LUAU_FASTFLAG(LuauTypeCheckerMathAvg)
 
 #ifndef LUAU_CONFORMANCE_SOURCE_DIR
 // Walks up from the current directory looking for the Client folder,
@@ -1313,7 +1317,12 @@ TEST_CASE("BuffersWithCage")
 #endif
 
 TEST_CASE("Math")
-{
+{    
+    ScopedFastFlag mathAvg[] = {
+        {FFlag::LuauMathAvg, true},
+        {FFlag::LuauCompileMathAvg, true},
+    };
+    
     runConformance("math.luau");
 }
 
@@ -2205,6 +2214,11 @@ TEST_CASE("Types")
 {
     ScopedFastFlag integerType{FFlag::LuauIntegerType2, true};
     ScopedFastFlag luauCoroutineFinallyAnalysis{FFlag::LuauCoroutineFinallyAnalysis, FFlag::LuauCoroutineFinally};
+    ScopedFastFlag mathAvg[] = {
+        {FFlag::LuauMathAvg, true},
+        {FFlag::LuauCompileMathAvg, true},
+        {FFlag::LuauTypeCheckerMathAvg, true},
+    };
 
     runConformance(
         "types.luau",
