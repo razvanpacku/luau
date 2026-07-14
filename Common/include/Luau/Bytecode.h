@@ -767,6 +767,9 @@ enum LuauBuiltinFunction
     LBF_BUFFER_WRITEVECTORF32X2,
     LBF_BUFFER_WRITEVECTORF32X3,
     LBF_BUFFER_WRITEVECTORF32X4,
+
+    //math.avg
+    LBF_MATH_AVG,
 };
 
 // Capture type, used in LOP_CAPTURE

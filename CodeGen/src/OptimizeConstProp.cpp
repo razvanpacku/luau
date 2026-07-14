@@ -1583,6 +1583,7 @@ static void handleBuiltinEffects(ConstPropState& state, LuauBuiltinFunction bfid
     case LBF_BUFFER_READVECTORF32X2:
     case LBF_BUFFER_READVECTORF32X3:
     case LBF_BUFFER_READVECTORF32X4:
+    case LBF_MATH_AVG:
         break;
     case LBF_BUFFER_WRITEU8:
     case LBF_BUFFER_WRITEU16:

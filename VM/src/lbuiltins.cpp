@@ -1832,6 +1832,29 @@ static int luauF_isfinite(lua_State* L, StkId res, TValue* arg0, int nresults, S
     return -1;
 }
 
+static int luauF_avg(lua_State* L, StkId res, TValue* arg0, int nresults, StkId args, int nparams)
+{
+    if (nparams >= 2 && nresults <= 1 && ttisnumber(arg0) && ttisnumber(args))
+    {
+        double avg = nvalue(arg0);
+        avg += nvalue(args);
+
+        for (int i = 3; i <= nparams; ++i)
+        {
+            if (!ttisnumber(args + (i - 2)))
+                return -1;
+
+            avg += nvalue(args + (i - 2));
+        }
+
+        avg /= nparams;
+        setnvalue(res, avg);
+        return 1;
+    }
+
+    return -1;
+}
+
 static int luauF_missing(lua_State* L, StkId res, TValue* arg0, int nresults, StkId args, int nparams)
 {
     return -1;
@@ -2135,6 +2158,8 @@ const luau_FastFunction luauF_table[256] = {
     luauF_writevector<2>,
     luauF_writevector<3>,
     luauF_writevector<4>,
+
+    luauF_avg,
 
 // When adding builtins, add them above this line; what follows is 64 "dummy" entries with luauF_missing fallback.
 // This is important so that older versions of the runtime that don't support newer builtins automatically fall back via luauF_missing.
