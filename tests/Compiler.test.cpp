@@ -43,6 +43,7 @@ LUAU_FASTFLAG(LuauCompileReuseLocalRegs)
 LUAU_FASTFLAG(LuauCompileTableBuiltinsCreateClear)
 LUAU_FASTFLAG(LuauCompileReuseLowersLimit)
 LUAU_FASTFLAG(DebugLuauWhileLocalSyntax)
+LUAU_FASTFLAG(LuauCompileMathAvg)
 
 using namespace Luau;
 
@@ -10387,6 +10388,8 @@ RETURN R1 -1
 
 TEST_CASE("BuiltinFolding")
 {
+    ScopedFastFlag mathAvg{FFlag::LuauCompileMathAvg, true};
+
     CHECK_EQ(
         "\n" + compileFunction(
                    R"(
@@ -10449,7 +10452,8 @@ return
     math.isinf(math.huge),
     math.isinf(-4),
     math.isfinite(42),
-    math.isfinite(-math.huge)
+    math.isfinite(-math.huge),
+    math.avg(1, 2, 3)
 )",
                    0,
                    2
@@ -10514,7 +10518,8 @@ LOADB R55 1
 LOADB R56 0
 LOADB R57 1
 LOADB R58 0
-RETURN R0 59
+LOADN R59 2
+RETURN R0 60
 )"
     );
 }
