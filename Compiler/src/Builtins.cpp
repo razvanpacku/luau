@@ -10,6 +10,7 @@
 LUAU_FASTFLAGVARIABLE(DebugLuauBufferVectorFastcalls)
 LUAU_FASTFLAGVARIABLE(LuauCompileTableBuiltinsCreateClear)
 
+LUAU_FASTFLAGVARIABLE(LuauCompileMathAvg)
 
 namespace Luau
 {
@@ -172,6 +173,12 @@ static int getBuiltinFunctionId(const Builtin& builtin, const CompileOptions& op
             return LBF_MATH_ISINF;
         if (builtin.method == "isfinite")
             return LBF_MATH_ISFINITE;
+
+        if (FFlag::LuauCompileMathAvg)
+        {
+            if (builtin.method == "avg")
+                return LBF_MATH_AVG;
+        }
     }
 
     if (builtin.object == "bit32")
@@ -633,6 +640,8 @@ BuiltinInfo getBuiltinInfo(int bfid)
         return {1, 1, BuiltinInfo::Flag_NoneSafe};
     case LBF_MATH_ISFINITE:
         return {1, 1, BuiltinInfo::Flag_NoneSafe};
+    case LBF_MATH_AVG:
+        return {-1, 1}; // variadic
     }
 
     LUAU_UNREACHABLE();

@@ -856,6 +856,9 @@ struct TypeMapVisitor : AstVisitor
             case LBF_BUFFER_READVECTORF32X4:
                 recordResolvedType(node, &builtinTypes.vectorType);
                 break;
+            case LBF_MATH_AVG:
+                recordResolvedType(node, &builtinTypes.numberType);
+                break;
             }
         }
         else
